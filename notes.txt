@@ -6,3 +6,8 @@ Persister
 - en liste af indlæg
 	- afsender
 	- indhold
+
+
+
+User
+- ShareLink

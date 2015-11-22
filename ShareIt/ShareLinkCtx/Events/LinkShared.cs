@@ -1,11 +1,16 @@
-﻿using ShareIt.ShareLinkCtx.Domain;
+﻿using System;
+using ShareIt.Infrastructure;
+using ShareIt.ShareLinkCtx.Domain;
 
 namespace ShareIt.ShareLinkCtx.Events
 {
-    public class LinkShared
+    public class LinkShared : Event
     {
-        public LinkShared(SenderId senderId)
+        public Guid Id { get; private set; }
+
+        public LinkShared(Guid id)
         {
+            Id = id;
         }
     }
 }

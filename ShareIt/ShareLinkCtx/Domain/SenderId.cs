@@ -2,13 +2,11 @@
 
 namespace ShareIt.ShareLinkCtx.Domain
 {
-    public class SenderId
+    public class SenderId : Identity
     {
-        private Guid _value;
-
         public SenderId()
         {
-            _value = Guid.NewGuid();
+            Value = Guid.NewGuid();
         }
     }
 }
