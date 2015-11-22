@@ -1,0 +1,8 @@
+Persister
+
+- url
+- afsender
+- modtagere
+- en liste af indlæg
+	- afsender
+	- indhold
