@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Net.Mail;
 
-namespace ShareIt.ShareLinkCtx.DomainServices
+namespace ShareIt.NotificationCtx.DomainServices
 {
     public class MailService
     {
-        private SmtpClient _smtpServer;
+        private readonly SmtpClient _smtpServer;
 
         public MailService(SmtpClient smtpClient, NetworkCredential credentials)
         {

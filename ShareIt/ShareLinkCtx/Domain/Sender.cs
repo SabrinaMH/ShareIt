@@ -1,42 +1,42 @@
 ﻿using System;
-using System.Net.Mail;
+using System.Collections.Generic;
+using System.Linq;
+using Akka.IO;
 using ShareIt.EventStore;
-using ShareIt.ShareLinkCtx.DomainServices;
+using ShareIt.Infrastructure;
 using ShareIt.ShareLinkCtx.Events;
 
 namespace ShareIt.ShareLinkCtx.Domain
 {
     public class Sender : AggregateRoot
     {
-        // todo: find way to avoid having a public constructor. Needed for Repository<Sender>
-        public Sender() { }
+        private Name _name;
+        private EmailAddress _email;
 
-        public Sender(Name name, EmailAddress email)
+        public Sender(IList<Event> history) : base(history) { }
+
+        public Sender(Name name, EmailAddress email) : base(new SenderId(email))
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
 
-            _id = Guid.NewGuid();
-            Name = name;
-            Email = email;
+            ApplyChange(new SenderRegistered((SenderId)Id, name, email));
         }
 
-        public Name Name { get; private set; }
-        public EmailAddress Email { get; private set; }
-        private Guid _id;
-
-        public override Guid Id
+        public void ShareLink(ListOfReceivers receivers, string subject, Link link)
         {
-            get { return _id; }
+            if (receivers == null) throw new ArgumentNullException("receivers");
+            if (link == null) throw new ArgumentNullException("link");
+
+            List<string> emailsOfReceivers = receivers.GetEmails().Select(x => x.Value).ToList();
+            ApplyChange(new SharedLink(Id, _name, _email, emailsOfReceivers, subject, link.ToString()));
         }
 
-        public void ShareLink(MailService mailService, MailMessage mail)
+        private void Apply(SenderRegistered @event)
         {
-            if (mailService == null) throw new ArgumentNullException("mailService");
-            if (mail == null) throw new ArgumentNullException("mail");
-
-            ApplyChange(new LinkShared(Id));
-            mailService.Send(mail);
+            Id = @event.Id;
+            _name = @event.Name;
+            _email = @event.Email;
         }
     }
 }

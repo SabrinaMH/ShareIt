@@ -1,9 +1,12 @@
-﻿using System;
-
-namespace ShareIt.ShareLinkCtx.Domain
+﻿namespace ShareIt.ShareLinkCtx.Domain
 {
     public class Identity
     {
-        public Guid Value { get; protected set; }
+        public string Value { get; protected set; }
+
+        public static implicit operator string(Identity id)
+        {
+            return id.Value;
+        }
     }
 }

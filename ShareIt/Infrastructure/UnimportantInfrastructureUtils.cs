@@ -8,70 +8,17 @@ using System.Reflection;
 namespace ShareIt.Infrastructure
 {
     // https://github.com/gregoryyoung/m-r/blob/master/SimpleCQRS/InfrastructureCrap.DontBotherReadingItsNotImportant.cs
-    class PrivateReflectionDynamicObject : DynamicObject
+    internal class PrivateReflectionDynamicObject : DynamicObject
     {
-        private static IDictionary<Type, IDictionary<string, IProperty>> _propertiesOnType = new ConcurrentDictionary<Type, IDictionary<string, IProperty>>();
+        private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+        private static readonly IDictionary<Type, IDictionary<string, IProperty>> _propertiesOnType =
+            new ConcurrentDictionary<Type, IDictionary<string, IProperty>>();
 
         // Simple abstraction to make field and property access consistent
-        interface IProperty
-        {
-            string Name { get; }
-            object GetValue(object obj, object[] index);
-            void SetValue(object obj, object val, object[] index);
-        }
-
-        // IProperty implementation over a PropertyInfo
-        class Property : IProperty
-        {
-            internal PropertyInfo PropertyInfo { get; set; }
-
-            string IProperty.Name
-            {
-                get
-                {
-                    return PropertyInfo.Name;
-                }
-            }
-
-            object IProperty.GetValue(object obj, object[] index)
-            {
-                return PropertyInfo.GetValue(obj, index);
-            }
-
-            void IProperty.SetValue(object obj, object val, object[] index)
-            {
-                PropertyInfo.SetValue(obj, val, index);
-            }
-        }
-
-        // IProperty implementation over a FieldInfo
-        class Field : IProperty
-        {
-            internal FieldInfo FieldInfo { get; set; }
-
-            string IProperty.Name
-            {
-                get
-                {
-                    return FieldInfo.Name;
-                }
-            }
-
-
-            object IProperty.GetValue(object obj, object[] index)
-            {
-                return FieldInfo.GetValue(obj);
-            }
-
-            void IProperty.SetValue(object obj, object val, object[] index)
-            {
-                FieldInfo.SetValue(obj, val);
-            }
-        }
 
 
         private object RealObject { get; set; }
-        private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         internal static object WrapObjectIfNeeded(object o)
         {
@@ -79,7 +26,7 @@ namespace ShareIt.Infrastructure
             if (o == null || o.GetType().IsPrimitive || o is string)
                 return o;
 
-            return new PrivateReflectionDynamicObject() { RealObject = o };
+            return new PrivateReflectionDynamicObject {RealObject = o};
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
@@ -87,7 +34,7 @@ namespace ShareIt.Infrastructure
             IProperty prop = GetProperty(binder.Name);
 
             // Get the property value
-            result = prop.GetValue(RealObject, index: null);
+            result = prop.GetValue(RealObject, null);
 
             // Wrap the sub object if necessary. This allows nested anonymous objects to work.
             result = WrapObjectIfNeeded(result);
@@ -100,7 +47,7 @@ namespace ShareIt.Infrastructure
             IProperty prop = GetProperty(binder.Name);
 
             // Set the property value
-            prop.SetValue(RealObject, value, index: null);
+            prop.SetValue(RealObject, value, null);
 
             return true;
         }
@@ -169,11 +116,12 @@ namespace ShareIt.Infrastructure
 
             // Get a list of supported properties and fields and show them as part of the exception message
             // For fields, skip the auto property backing fields (which name start with <)
-            var propNames = typeProperties.Keys.Where(name => name[0] != '<').OrderBy(name => name);
+            IOrderedEnumerable<string> propNames =
+                typeProperties.Keys.Where(name => name[0] != '<').OrderBy(name => name);
             throw new ArgumentException(
                 String.Format(
-                "The property {0} doesn't exist on type {1}. Supported properties are: {2}",
-                propertyName, RealObject.GetType(), String.Join(", ", propNames)));
+                    "The property {0} doesn't exist on type {1}. Supported properties are: {2}",
+                    propertyName, RealObject.GetType(), String.Join(", ", propNames)));
         }
 
         private static IDictionary<string, IProperty> GetTypeProperties(Type type)
@@ -192,13 +140,13 @@ namespace ShareIt.Infrastructure
             // First, add all the properties
             foreach (PropertyInfo prop in type.GetProperties(bindingFlags).Where(p => p.DeclaringType == type))
             {
-                typeProperties[prop.Name] = new Property() { PropertyInfo = prop };
+                typeProperties[prop.Name] = new Property {PropertyInfo = prop};
             }
 
             // Now, add all the fields
             foreach (FieldInfo field in type.GetFields(bindingFlags).Where(p => p.DeclaringType == type))
             {
-                typeProperties[field.Name] = new Field() { FieldInfo = field };
+                typeProperties[field.Name] = new Field {FieldInfo = field};
             }
 
             // Finally, recurse on the base class to add its fields
@@ -239,6 +187,55 @@ namespace ShareIt.Infrastructure
                 return null;
             }
         }
+
+        private class Field : IProperty
+        {
+            internal FieldInfo FieldInfo { get; set; }
+
+            string IProperty.Name
+            {
+                get { return FieldInfo.Name; }
+            }
+
+
+            object IProperty.GetValue(object obj, object[] index)
+            {
+                return FieldInfo.GetValue(obj);
+            }
+
+            void IProperty.SetValue(object obj, object val, object[] index)
+            {
+                FieldInfo.SetValue(obj, val);
+            }
+        }
+
+        private interface IProperty
+        {
+            string Name { get; }
+            object GetValue(object obj, object[] index);
+            void SetValue(object obj, object val, object[] index);
+        }
+
+        // IProperty implementation over a PropertyInfo
+        private class Property : IProperty
+        {
+            internal PropertyInfo PropertyInfo { get; set; }
+
+            string IProperty.Name
+            {
+                get { return PropertyInfo.Name; }
+            }
+
+            object IProperty.GetValue(object obj, object[] index)
+            {
+                return PropertyInfo.GetValue(obj, index);
+            }
+
+            void IProperty.SetValue(object obj, object val, object[] index)
+            {
+                PropertyInfo.SetValue(obj, val, index);
+            }
+        }
     }
 
     public static class PrivateReflectionDynamicObjectExtensions
@@ -248,4 +245,4 @@ namespace ShareIt.Infrastructure
             return PrivateReflectionDynamicObject.WrapObjectIfNeeded(o);
         }
     }
-} 
+}

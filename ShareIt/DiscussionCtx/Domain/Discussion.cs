@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Akka.Actor;
 
 namespace ShareIt.DiscussionCtx.Domain
 {
-    public class Discussion
+    public class Discussion : ReceiveActor
     {
-        public Discussion(string headline, Topic topic, List<Participant> participants)
+        public Discussion(Topic topic, List<Participant> participants)
         {
         }
     }

@@ -1,32 +1,49 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ShareIt.Infrastructure;
+using ShareIt.ShareLinkCtx.Domain;
 
 namespace ShareIt.EventStore
 {
     public abstract class AggregateRoot
     {
         private readonly IList<Event> _changes = new List<Event>();
-        public abstract Guid Id { get; }
+        public Identity Id { get; protected set; }
 
-        public IList<Event> GetUncommittedChanges()
+        private int _version = 0;
+        public int Version { get { return _version; } }
+
+        public AggregateRoot(Identity id)
         {
-            return _changes;
+            Id = id;
         }
 
-        public void LoadFromHistory(IList<Event> history)
+        public AggregateRoot(IList<Event> history)
         {
-            foreach (var @event in history)
+            foreach (Event @event in history)
             {
                 ApplyChange(@event, false);
             }
         }
 
+        public IList<Event> GetUncommittedEvents()
+        {
+            return _changes;
+        }
+
+        public void MarkChangesAsCommitted()
+        {
+            _version += _changes.Count;
+            _changes.Clear();
+        }
+
         private void ApplyChange(Event @event, bool isNew)
         {
             this.AsDynamic().Apply(@event);
-            if (isNew) _changes.Add(@event);
+            _version++;
+            if (isNew)
+            {
+                _changes.Add(@event);
+            }
         }
 
         protected void ApplyChange(Event @event)
