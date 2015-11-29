@@ -1,0 +1,31 @@
+{
+	"id": "ec43f259-b93d-88e2-d012-7964ba36e899",
+	"name": "ShareIt",
+	"requests": [
+		{
+			"id": "faf8e68d-e3a1-149b-7b3a-d497c4c8786c",
+			"headers": "Authorization: Basic c21oQG1qb2xuZXIuZGs6c2FiLTE5ODY=\nContent-Type: application/xml\nAccept: application/xml\n",
+			"url": "http://localhost:64176/link",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "ec43f259-b93d-88e2-d012-7964ba36e899",
+			"data": [],
+			"dataMode": "raw",
+			"name": "ShareLink",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1448569313850,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\n    \"NameOfSender\": \"Sabrina\",\n    \"EmailOfSender\": \"sabrina_privat@hotmail.com\",\n    \"Link\": \"http://google.com\",\n    \"Subject\": \"Search\",\n    \"EmailsOfReceivers\": \n    [ \"sabrina_privat@hotmail.com\", \"cecilieravn@gmail.com\" ]\n}"
+		}
+	],
+	"order": [
+		"faf8e68d-e3a1-149b-7b3a-d497c4c8786c"
+	],
+	"timestamp": 1448569313850
+}
