@@ -8,19 +8,19 @@ using ShareIt.ShareLinkCtx.Events;
 
 namespace ShareIt.ShareLinkCtx.Domain
 {
-    public class Sender : AggregateRoot
+    public class Sharer : AggregateRoot
     {
         private Name _name;
         private EmailAddress _email;
 
-        public Sender(IList<Event> history) : base(history) { }
+        public Sharer(IList<Event> history) : base(history) { }
 
-        public Sender(Name name, EmailAddress email) : base(new SenderId(email))
+        public Sharer(Name name, EmailAddress email) : base(new SharerId(email))
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
 
-            ApplyChange(new SenderRegistered((SenderId)Id, name, email));
+            ApplyChange(new SharerRegistered((SharerId)Id, name, email));
         }
 
         public void ShareLink(ListOfReceivers receivers, string subject, Link link)
@@ -32,7 +32,7 @@ namespace ShareIt.ShareLinkCtx.Domain
             ApplyChange(new SharedLink(Id, _name, _email, emailsOfReceivers, subject, link.ToString()));
         }
 
-        private void Apply(SenderRegistered @event)
+        private void Apply(SharerRegistered @event)
         {
             Id = @event.Id;
             _name = @event.Name;

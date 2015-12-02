@@ -18,8 +18,8 @@ namespace ShareIt.NotificationCtx
             var mail = new MailMessage();
             string receivers = string.Join(",", @event.To);
             mail.To.Add(receivers);
-            mail.From = new MailAddress(@event.EmailOfSender);
-            mail.Subject = string.Format("{0} shared a link on {1} with you", @event.NameOfSender, @event.Subject);
+            mail.From = new MailAddress(@event.EmailOfSharer);
+            mail.Subject = string.Format("{0} shared a link on {1} with you", @event.NameOfSharer, @event.Subject);
             mail.Body = "To view the link go to ...";
 
             _mailService.Send(mail);

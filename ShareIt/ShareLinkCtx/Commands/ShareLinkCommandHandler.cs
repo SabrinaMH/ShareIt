@@ -5,23 +5,23 @@ namespace ShareIt.ShareLinkCtx.Commands
 {
     public class ShareLinkCommandHandler
     {
-        private readonly EventStoreRepository<Sender> _repository;
+        private readonly EventStoreRepository<Sharer> _repository;
 
-        public ShareLinkCommandHandler(EventStoreRepository<Sender> repository)
+        public ShareLinkCommandHandler(EventStoreRepository<Sharer> repository)
         {
             _repository = repository;
         }
 
         public void Handle(ShareLink command)
         {
-            var senderId = new SenderId(command.EmailOfSender.Value);
-            Sender sender = _repository.GetById(senderId);
-            if (sender == default(Sender))
+            var sharerId = new SharerId(command.EmailOfSharer.Value);
+            Sharer sharer = _repository.GetById(sharerId);
+            if (sharer == null)
             {
-                sender = new Sender(command.NameOfSender, command.EmailOfSender);
+                sharer = new Sharer(command.NameOfSharer, command.EmailOfSharer);
             }
-            sender.ShareLink(command.Receivers, command.Subject, command.Link);
-            _repository.Save(sender);
+            sharer.ShareLink(command.Receivers, command.Subject, command.Link);
+            _repository.Save(sharer);
         }
     }
 }

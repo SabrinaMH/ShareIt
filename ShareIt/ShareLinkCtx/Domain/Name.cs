@@ -4,18 +4,18 @@ namespace ShareIt.ShareLinkCtx.Domain
 {
     public class Name
     {
-        private readonly string _name;
+        public string Value { get; private set; }
 
-        public Name(string name)
+        public Name(string value)
         {
-            if (String.IsNullOrWhiteSpace(name))
-                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", name));
-            _name = name;
+            Value = value;
+            if (String.IsNullOrWhiteSpace(value))
+                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", value));
         }
 
         public static implicit operator string(Name name)
         {
-            return name._name;
+            return name.Value;
         }
     }
 }

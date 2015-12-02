@@ -18,7 +18,7 @@ namespace ShareIt.Infrastructure
 
         public static void Bootstrap()
         {
-            _system = ActorSystem.Create("DiscussionActorSystem");
+            _system = ActorSystem.Create("LinkActorSystem");
         }
 
         public static void ShutDown()

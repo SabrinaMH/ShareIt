@@ -75,10 +75,10 @@ namespace ShareIt.Infrastructure
         {
             var bus = new Bus();
             var mailService = new MailService(new SmtpClient(Settings.SmtpClientHost), Settings.ReadCredentials());
-            var senderRepository = new EventStoreRepository<Sender>(bus);
+            var sharerRepository = new EventStoreRepository<Sharer>(bus);
 
             // Command handlers
-            bus.RegisterHandler<ShareLink>(cmd => new ShareLinkCommandHandler(senderRepository).Handle(cmd));
+            bus.RegisterHandler<ShareLink>(cmd => new ShareLinkCommandHandler(sharerRepository).Handle(cmd));
 
             // Event handlers
             bus.RegisterHandler<SharedLink>(@event => new NotificationEventHandlers(mailService).Handle(@event));
