@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using Akka.Actor;
-using Akka.Event;
-using ShareIt.Infrastructure;
 
 namespace ShareIt.DiscussionCtx.Domain
 {
     public class LinkActor : ReceiveActor
     {
-        public class StartDiscussion
+        public class Discuss
         {
-            public Topic Topic { get; private set; }
-            public List<Participant> Participants { get; private set; }
-
-            public StartDiscussion(Topic topic, List<Participant> participants)
+            public Discuss(Topic topic, List<Participant> participants)
             {
                 if (topic == null) throw new ArgumentNullException("topic");
                 if (participants == null) throw new ArgumentNullException("participants");
                 Topic = topic;
                 Participants = participants;
             }
+
+            public List<Participant> Participants { get; private set; }
+            public Topic Topic { get; private set; }
         }
 
         private readonly Uri _uri;
@@ -34,10 +32,10 @@ namespace ShareIt.DiscussionCtx.Domain
 
         private void Initialize()
         {
-            Receive<StartDiscussion>(discussion =>
+            Receive<Discuss>(msg =>
             {
                 var discussionActor =
-                    Context.ActorOf(Props.Create(() => new DiscussionActor(discussion.Topic, discussion.Participants)));
+                    Context.ActorOf(Props.Create(() => new DiscussionActor(msg.Topic, msg.Participants)));
             });
         }
 

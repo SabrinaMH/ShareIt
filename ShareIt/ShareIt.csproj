@@ -133,8 +133,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="DiscussionCtx\Commands\DiscussionCommandHandler.cs" />
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
+    <Compile Include="DiscussionCtx\Domain\DistributionActor.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
+    <Compile Include="DiscussionCtx\Domain\Link.cs" />
     <Compile Include="DiscussionCtx\Domain\LinkActor.cs" />
+    <Compile Include="DiscussionCtx\Domain\LinkDistributionActor.cs" />
     <Compile Include="DiscussionCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Domain\PostActor.cs" />
     <Compile Include="DiscussionCtx\Domain\Poster.cs" />
