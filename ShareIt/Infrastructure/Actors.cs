@@ -7,7 +7,7 @@ namespace ShareIt.Infrastructure
     public static class Actors
     {
         private static ActorSystem _system;
-        private static IActorRef _distributionActor;
+        private static IActorRef _linkCoordinator;
 
         public static ActorSystem System
         {
@@ -18,20 +18,20 @@ namespace ShareIt.Infrastructure
             }
         }
 
-        public static IActorRef DistributionActor
+        public static IActorRef LinkCoordinator
         {
             get
             {
-                if (_distributionActor == null) throw new InvalidOperationException("Distribution actor is not initialized");
-                return _distributionActor;
+                if (_linkCoordinator == null) throw new InvalidOperationException("Distribution actor is not initialized");
+                return _linkCoordinator;
             }
         }
 
 
         public static void Bootstrap()
         {
-            _system = ActorSystem.Create("ActorSystem");
-            _distributionActor = _system.ActorOf(Props.Create(() => new DistributionActor()), "distributionActor");
+            _system = ActorSystem.Create("Actors");
+            _linkCoordinator = _system.ActorOf(Props.Create(() => new LinkCoordinatorActor()), "linkCoordinator");
         }
 
         public static void ShutDown()

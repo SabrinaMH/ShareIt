@@ -1,47 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using Akka.Actor;
+using Akka.Persistence;
+using ShareIt.DiscussionCtx.Events;
+using ShareIt.DiscussionCtx.Messages;
 
 namespace ShareIt.DiscussionCtx.Domain
 {
-    public class LinkActor : ReceiveActor
+    public class LinkActor : PersistentActor
     {
-        public class Discuss
-        {
-            public Discuss(Topic topic, List<Participant> participants)
-            {
-                if (topic == null) throw new ArgumentNullException("topic");
-                if (participants == null) throw new ArgumentNullException("participants");
-                Topic = topic;
-                Participants = participants;
-            }
-
-            public List<Participant> Participants { get; private set; }
-            public Topic Topic { get; private set; }
-        }
-
         private readonly Uri _uri;
 
         public LinkActor(Uri uri)
         {
             if (uri == null) throw new ArgumentNullException("uri");
             _uri = uri;
-
-            Initialize();
         }
 
-        private void Initialize()
+        public string Id
         {
-            Receive<Discuss>(msg =>
+            get { return _uri.AbsoluteUri; }
+        }
+
+        protected override bool ReceiveRecover(object message)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override bool ReceiveCommand(object message)
+        {
+            if (message is OpenDiscussion)
             {
-                var discussionActor =
-                    Context.ActorOf(Props.Create(() => new DiscussionActor(msg.Topic, msg.Participants)));
-            });
+                var discussion = message as OpenDiscussion;
+                var discussionId = Guid.NewGuid();
+                Persist(new DiscussionOpened(discussionId, discussion.Topic, discussion.BetweenWho), Apply);
+            }
+            else
+            {
+                return false;
+            }
+            return true;
         }
 
-        public override string ToString()
+        private void Apply(DiscussionOpened discussion)
         {
-            return _uri.AbsoluteUri;
+            var discussionActor = Context.Child(discussion.Id.ToString());
+            if (discussionActor.IsNobody())
+            {
+                discussionActor =
+                    Context.ActorOf(
+                        Props.Create(() => new DiscussionActor(discussion.Id, discussion.Topic, discussion.BetweenWho)),
+                        discussion.Id.ToString());
+            }
+        }
+
+        public override string PersistenceId
+        {
+            get { return Id; }
         }
     }
 }

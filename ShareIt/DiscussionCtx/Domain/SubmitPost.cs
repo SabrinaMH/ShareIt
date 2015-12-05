@@ -5,18 +5,21 @@ namespace ShareIt.DiscussionCtx.Domain
 {
     public class SubmitPost : Command
     {
+        public LinkId LinkId { get; private set; }
         public DiscussionId DiscussionId { get; private set; }
         public Poster Poster { get; private set; }
         public string BodyText { get; private set; }
 
-        public SubmitPost(DiscussionId id, Poster poster, string bodyText)
+        public SubmitPost(LinkId linkId, DiscussionId discussionId, Poster poster, string bodyText)
         {
+            if (linkId == null) throw new ArgumentNullException("linkId");
             if (String.IsNullOrWhiteSpace(bodyText))
                 throw new ArgumentException(String.Format("{0} cannot be null or white spaces", bodyText));
-            if (id == null) throw new ArgumentNullException("id");
+            if (discussionId == null) throw new ArgumentNullException("id");
             if (poster == null) throw new ArgumentNullException("poster");
 
-            DiscussionId = id;
+            LinkId = linkId;
+            DiscussionId = discussionId;
             Poster = poster;
             BodyText = bodyText;
         }

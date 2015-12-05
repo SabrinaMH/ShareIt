@@ -42,12 +42,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akka, Version=1.0.4.12, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Akka.1.0.4\lib\net45\Akka.dll</HintPath>
+    <Reference Include="Akka">
+      <HintPath>..\packages\Akka.1.0.5\lib\net45\Akka.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Akka.Persistence">
+      <HintPath>..\packages\Akka.Persistence.1.0.5.15-beta\lib\net45\Akka.Persistence.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EventStore.ClientAPI, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EventStore.Client.3.3.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers, Version=2.4.1.521, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers.Serialization, Version=2.4.1.521, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -75,6 +87,7 @@
       <HintPath>..\packages\Swashbuckle.Core.5.2.2\lib\net40\Swashbuckle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -123,6 +136,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CHANGES.txt" />
+    <Content Include="licenses\license.txt" />
+    <Content Include="licenses\protoc-license.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -133,16 +149,22 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="DiscussionCtx\Commands\DiscussionCommandHandler.cs" />
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
-    <Compile Include="DiscussionCtx\Domain\DistributionActor.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
     <Compile Include="DiscussionCtx\Domain\Link.cs" />
     <Compile Include="DiscussionCtx\Domain\LinkActor.cs" />
-    <Compile Include="DiscussionCtx\Domain\LinkDistributionActor.cs" />
+    <Compile Include="DiscussionCtx\Domain\LinkCoordinatorActor.cs" />
+    <Compile Include="DiscussionCtx\Domain\LinkId.cs" />
     <Compile Include="DiscussionCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Domain\PostActor.cs" />
     <Compile Include="DiscussionCtx\Domain\Poster.cs" />
     <Compile Include="DiscussionCtx\Domain\SubmitPost.cs" />
     <Compile Include="DiscussionCtx\Events\DiscussionEventHandlers.cs" />
+    <Compile Include="DiscussionCtx\Events\DiscussionOpened.cs" />
+    <Compile Include="DiscussionCtx\Events\PostPublished.cs" />
+    <Compile Include="DiscussionCtx\Messages\OpenDiscussion.cs" />
+    <Compile Include="DiscussionCtx\Messages\PublishPost.cs" />
+    <Compile Include="DiscussionCtx\Messages\ShareLink.cs" />
+    <Compile Include="DiscussionCtx\Messages\SubmitPost.cs" />
     <Compile Include="EventStore\EventStoreRepository.cs" />
     <Compile Include="Infrastructure\Actors.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
@@ -178,6 +200,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="protos\tutorial\addressbook.proto" />
+    <Content Include="protos\google\protobuf\descriptor.proto" />
+    <Content Include="protos\google\protobuf\csharp_options.proto" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

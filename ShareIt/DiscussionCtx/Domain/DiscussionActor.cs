@@ -1,47 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.UI.WebControls.WebParts;
 using Akka.Actor;
+using Akka.Persistence;
+using ShareIt.DiscussionCtx.Events;
+using ShareIt.DiscussionCtx.Messages;
 
 namespace ShareIt.DiscussionCtx.Domain
 {
-    public class DiscussionActor : ReceiveActor
+    public class DiscussionActor : PersistentActor
     {
-        public class SubmitPost
-        {
-            public Poster Poster { get; private set; }
-            public string BodyText { get; private set; }
-
-            public SubmitPost(Poster poster, string bodyText)
-            {
-                if (String.IsNullOrWhiteSpace(bodyText))
-                    throw new ArgumentException(String.Format("{0} cannot be null or white spaces", bodyText));
-                if (poster == null) throw new ArgumentNullException("poster");
-                Poster = poster;
-                BodyText = bodyText;
-            }
-        }
-
+        private Guid _id;
         private Topic _topic;
         private List<Participant> _participants;
-        private int _nextPostNumber = 0;
+        private int _numberOfPosts = 0;
 
-        public DiscussionActor(Topic topic, List<Participant> participants)
+        public DiscussionActor(Guid id, Topic topic, List<Participant> participants)
         {
             if (topic == null) throw new ArgumentNullException("topic");
             if (participants == null) throw new ArgumentNullException("participants");
-            _topic = topic;
-            _participants = participants;
-
-            Initialize();
+            Persist(new DiscussionOpened(id, topic, participants), Apply);
         }
 
-        private void Initialize()
+        private void Apply(DiscussionOpened discussion)
         {
-            Receive<SubmitPost>(post =>
+            _id = discussion.Id;
+            _topic = discussion.Topic;
+            _participants = discussion.BetweenWho;
+        }
+
+        protected override bool ReceiveRecover(object message)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override bool ReceiveCommand(object message)
+        {
+            if (message is PublishPost)
             {
-                Context.ActorOf(Props.Create(() => new PostActor(post.Poster, post.BodyText, _nextPostNumber)));
-                _nextPostNumber++;
-            });
+                var post = message as PublishPost;
+                Persist(new PostPublished(post.Poster, post.BodyText), Apply);
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void Apply(PostPublished post)
+        {
+            var postNumber = _numberOfPosts;
+            Context.ActorOf(Props.Create(() => new PostActor(post.Poster, post.BodyText, postNumber)));
+            _numberOfPosts++;
+        }
+
+        public override string PersistenceId
+        {
+            get { return _id.ToString(); }
         }
     }
 }
