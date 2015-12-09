@@ -42,24 +42,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akka">
+    <Reference Include="Akka, Version=1.0.5.14, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Akka.1.0.5\lib\net45\Akka.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Akka.Persistence">
-      <HintPath>..\packages\Akka.Persistence.1.0.5.15-beta\lib\net45\Akka.Persistence.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EventStore.ClientAPI, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EventStore.Client.3.3.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Google.ProtocolBuffers, Version=2.4.1.521, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Google.ProtocolBuffers.Serialization, Version=2.4.1.521, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +69,14 @@
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog, Version=1.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.1.3.43\lib\net45\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx, Version=1.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.1.3.43\lib\net45\Serilog.FullNetFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
@@ -136,18 +132,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CHANGES.txt" />
-    <Content Include="licenses\license.txt" />
-    <Content Include="licenses\protoc-license.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\DiscussionController.cs" />
-    <Compile Include="API\Models\PosterInputModel.cs" />
-    <Compile Include="API\Models\SubmitPostInputModel.cs" />
+    <Compile Include="Controllers\DiscussionController.cs" />
+    <Compile Include="Controllers\Models\PosterInputModel.cs" />
+    <Compile Include="Controllers\Models\SubmitPostInputModel.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="DiscussionCtx\Commands\DiscussionCommandHandler.cs" />
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
     <Compile Include="DiscussionCtx\Domain\Link.cs" />
@@ -157,9 +149,8 @@
     <Compile Include="DiscussionCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Domain\PostActor.cs" />
     <Compile Include="DiscussionCtx\Domain\Poster.cs" />
-    <Compile Include="DiscussionCtx\Domain\SubmitPost.cs" />
-    <Compile Include="DiscussionCtx\Events\DiscussionEventHandlers.cs" />
     <Compile Include="DiscussionCtx\Events\DiscussionOpened.cs" />
+    <Compile Include="DiscussionCtx\Events\LinkActorCreated.cs" />
     <Compile Include="DiscussionCtx\Events\PostPublished.cs" />
     <Compile Include="DiscussionCtx\Messages\OpenDiscussion.cs" />
     <Compile Include="DiscussionCtx\Messages\PublishPost.cs" />
@@ -168,8 +159,8 @@
     <Compile Include="EventStore\EventStoreRepository.cs" />
     <Compile Include="Infrastructure\Actors.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
-    <Compile Include="API\Models\ShareLinkInputModel.cs" />
-    <Compile Include="API\ShareLinkController.cs" />
+    <Compile Include="Controllers\Models\ShareLinkInputModel.cs" />
+    <Compile Include="Controllers\ShareLinkController.cs" />
     <Compile Include="DiscussionCtx\Domain\DiscussionActor.cs" />
     <Compile Include="DiscussionCtx\Domain\Participant.cs" />
     <Compile Include="DiscussionCtx\Domain\Topic.cs" />
@@ -183,26 +174,16 @@
     <Compile Include="Infrastructure\UnimportantInfrastructureUtils.cs" />
     <Compile Include="NotificationCtx\NotificationEventHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShareLinkCtx\Commands\ShareLink.cs" />
-    <Compile Include="ShareLinkCtx\Commands\ShareLinkCommandHandler.cs" />
-    <Compile Include="ShareLinkCtx\Domain\EmailAddress.cs" />
-    <Compile Include="ShareLinkCtx\Domain\Identity.cs" />
-    <Compile Include="ShareLinkCtx\Domain\Link.cs" />
+    <Compile Include="DiscussionCtx\Domain\Identity.cs" />
     <Compile Include="NotificationCtx\DomainServices\MailService.cs" />
-    <Compile Include="ShareLinkCtx\Domain\Name.cs" />
-    <Compile Include="ShareLinkCtx\Domain\Receiver.cs" />
-    <Compile Include="ShareLinkCtx\Domain\ListOfReceivers.cs" />
-    <Compile Include="ShareLinkCtx\Domain\Sharer.cs" />
-    <Compile Include="ShareLinkCtx\Domain\SharerId.cs" />
-    <Compile Include="ShareLinkCtx\Events\SharerRegistered.cs" />
-    <Compile Include="ShareLinkCtx\Events\SharedLink.cs" />
+    <Compile Include="DiscussionCtx\Domain\Receiver.cs" />
+    <Compile Include="DiscussionCtx\Domain\ListOfReceivers.cs" />
+    <Compile Include="DiscussionCtx\Domain\Sharer.cs" />
+    <Compile Include="DiscussionCtx\Domain\SharerId.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="protos\tutorial\addressbook.proto" />
-    <Content Include="protos\google\protobuf\descriptor.proto" />
-    <Content Include="protos\google\protobuf\csharp_options.proto" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -210,7 +191,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

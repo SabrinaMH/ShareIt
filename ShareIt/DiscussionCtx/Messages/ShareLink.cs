@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ShareIt.DiscussionCtx.Domain;
 
 namespace ShareIt.DiscussionCtx.Messages
@@ -7,18 +6,21 @@ namespace ShareIt.DiscussionCtx.Messages
     public class ShareLink
     {
         public Link Link { get; private set; }
-        public Topic Topic { get; set; }
-        public List<Participant> BetweenWho { get; set; }
+        public Topic Topic { get; private set; }
+        public ListOfReceivers Receivers { get; private set; }
+        public Sharer Sharer { get; set; }
 
-        public ShareLink(Link link, Topic topic, List<Participant> betweenWho)
+        public ShareLink(Link link, Topic topic, Sharer sharer, ListOfReceivers receivers)
         {
             if (link == null) throw new ArgumentNullException("link");
             if (topic == null) throw new ArgumentNullException("topic");
-            if (betweenWho == null) throw new ArgumentNullException("betweenWho");
+            if (sharer == null) throw new ArgumentNullException("sharer");
+            if (receivers == null) throw new ArgumentNullException("receivers");
 
             Link = link;
             Topic = topic;
-            BetweenWho = betweenWho;
+            Sharer = sharer;
+            Receivers = receivers;
         } 
     }
 }

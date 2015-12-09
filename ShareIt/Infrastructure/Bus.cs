@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Mail;
 using System.Threading;
-using ShareIt.DiscussionCtx.Events;
-using ShareIt.EventStore;
-using ShareIt.NotificationCtx;
-using ShareIt.NotificationCtx.DomainServices;
-using ShareIt.ShareLinkCtx.Commands;
-using ShareIt.ShareLinkCtx.Domain;
-using ShareIt.ShareLinkCtx.Events;
 
 namespace ShareIt.Infrastructure
 {
@@ -40,7 +32,8 @@ namespace ShareIt.Infrastructure
             }
             else
             {
-                throw new InvalidOperationException("no handler registered");
+                throw new InvalidOperationException("" +
+                                                    "no handler registered");
             }
         }
 
@@ -74,15 +67,10 @@ namespace ShareIt.Infrastructure
         public static Bus Bootstrap()
         {
             var bus = new Bus();
-            var mailService = new MailService(new SmtpClient(Settings.SmtpClientHost), Settings.ReadCredentials());
-            var sharerRepository = new EventStoreRepository<Sharer>(bus);
 
             // Command handlers
-            bus.RegisterHandler<ShareLink>(cmd => new ShareLinkCommandHandler(sharerRepository).Handle(cmd));
 
             // Event handlers
-            bus.RegisterHandler<SharedLink>(@event => new NotificationEventHandlers(mailService).Handle(@event));
-            bus.RegisterHandler<SharedLink>(@event => new DiscussionEventHandlers().Handle(@event));
 
             return bus;
         }

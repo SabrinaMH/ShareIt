@@ -4,7 +4,7 @@ using ShareIt.DiscussionCtx.Domain;
 
 namespace ShareIt.DiscussionCtx.Messages
 {
-    public class OpenDiscussion
+    public class OpenDiscussion 
     {
         public Topic Topic { get; private set; }
         public List<Participant> BetweenWho { get; private set; }

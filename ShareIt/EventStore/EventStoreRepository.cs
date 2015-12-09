@@ -62,7 +62,9 @@ namespace ShareIt.EventStore
         private Event DeserializeEvent(ResolvedEvent e) 
         {
             var eventClrTypeName = JObject.Parse(Encoding.UTF8.GetString(e.OriginalEvent.Metadata)).Property(EventClrTypeHeader).Value;
-            return (Event)JsonConvert.DeserializeObject(Encoding.UTF8.GetString(e.OriginalEvent.Data), Type.GetType((string)eventClrTypeName));
+            var eventType = Type.GetType((string)eventClrTypeName);
+            var eventData = Encoding.UTF8.GetString(e.OriginalEvent.Data);
+            return (Event)JsonConvert.DeserializeObject(eventData, eventType);
         }
         
         public void Save(AggregateRoot aggregate)

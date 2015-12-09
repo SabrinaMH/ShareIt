@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using ShareIt.EventStore;
 using ShareIt.Infrastructure;
-using ShareIt.ShareLinkCtx.Domain;
 
 namespace ShareIt.Tests
 {

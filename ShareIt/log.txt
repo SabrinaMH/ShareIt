@@ -1,0 +1,3 @@
+﻿2015-12-09 17:37:12.058 +01:00 [Debug] "now supervising akka://Actors/user/linkCoordinator/http:--test.com-"
+2015-12-09 17:37:12.082 +01:00 [Debug] "Started (ShareIt.DiscussionCtx.Domain.LinkActor)"
+2015-12-09 17:37:12.082 +01:00 [Debug] "LinkActor received OpenDiscussion message"

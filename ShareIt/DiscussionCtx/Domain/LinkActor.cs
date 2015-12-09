@@ -1,46 +1,55 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Policy;
 using Akka.Actor;
-using Akka.Persistence;
+using Akka.Event;
 using ShareIt.DiscussionCtx.Events;
 using ShareIt.DiscussionCtx.Messages;
+using ShareIt.EventStore;
+using ShareIt.Infrastructure;
 
 namespace ShareIt.DiscussionCtx.Domain
 {
-    public class LinkActor : PersistentActor
+    public class LinkActor : AggregateRoot
     {
-        private readonly Uri _uri;
+        private Uri _uri;
+        private Sharer _sharer;
 
-        public LinkActor(Uri uri)
+        public LinkActor(IList<Event> history) : base(history) { }
+
+        public LinkActor(Uri uri, Sharer sharer) : base(new Identity())
         {
             if (uri == null) throw new ArgumentNullException("uri");
-            _uri = uri;
-        }
+            if (sharer == null) throw new ArgumentNullException("sharer");
 
-        public string Id
-        {
-            get { return _uri.AbsoluteUri; }
-        }
+            ApplyChange(new LinkActorCreated(Id, uri.OriginalString, sharer.Email, sharer.Name));
 
-        protected override bool ReceiveRecover(object message)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool ReceiveCommand(object message)
-        {
-            if (message is OpenDiscussion)
+            Receive<OpenDiscussion>(msg =>
             {
-                var discussion = message as OpenDiscussion;
-                var discussionId = Guid.NewGuid();
-                Persist(new DiscussionOpened(discussionId, discussion.Topic, discussion.BetweenWho), Apply);
-            }
-            else
-            {
-                return false;
-            }
-            return true;
+                Logger.Debug("LinkActor received OpenDiscussion message");
+            });
         }
+
+        private void Apply(LinkActorCreated @event)
+        {
+            Id = new Identity(@event.Id);
+            _uri = new Uri(@event.Uri);
+            _sharer = new Sharer(new Name(@event.Name), new EmailAddress(@event.Email));
+        }
+
+
+
+    //    protected void Receive<OpenDiscussion>(msg =>
+    //{
+    //    _log.Debug("in handle opendiscussion of LinkActor");
+
+    //    //var discussion = message as OpenDiscussion;
+    //    //var discussionId = Guid.NewGuid();
+    //    return true;
+    //}
+    //);
 
         private void Apply(DiscussionOpened discussion)
         {
@@ -52,11 +61,6 @@ namespace ShareIt.DiscussionCtx.Domain
                         Props.Create(() => new DiscussionActor(discussion.Id, discussion.Topic, discussion.BetweenWho)),
                         discussion.Id.ToString());
             }
-        }
-
-        public override string PersistenceId
-        {
-            get { return Id; }
         }
     }
 }
