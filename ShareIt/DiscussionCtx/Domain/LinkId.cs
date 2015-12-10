@@ -2,13 +2,18 @@
 
 namespace ShareIt.DiscussionCtx.Domain
 {
-    public class LinkId
+    public class LinkId : Identity
     {
-        public Guid Id { get; private set; }
+        private string _value;
 
-        public LinkId(Guid id)
+        public LinkId(string value)
         {
-            Id = id;
+            _value = value;
+        }
+
+        public override string ToString()
+        {
+            return _value;
         }
     }
 }

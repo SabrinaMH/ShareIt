@@ -4,16 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Akka.Actor;
 using ShareIt.Controllers.Models;
+using ShareIt.DiscussionCtx.Commands;
 using ShareIt.DiscussionCtx.Domain;
-using ShareIt.DiscussionCtx.Messages;
-using ShareIt.Infrastructure;
 
 namespace ShareIt.Controllers
 {
     [RoutePrefix("sharelink")]
-    public class ShareLinkController : ApiController
+    public class ShareLinkController : BaseController
     {
         [Route("")]
         public HttpResponseMessage Post([FromBody] ShareLinkInputModel model)
@@ -27,9 +25,8 @@ namespace ShareIt.Controllers
             IEnumerable<Receiver> receivers = model.EmailsOfReceivers.Select(x => new Receiver(new EmailAddress(x)));
             var emailOfSharer = new EmailAddress(model.EmailOfSharer);
             var nameOfSharer = new Name(model.NameOfSharer);
-            var sharer = new Sharer(nameOfSharer, emailOfSharer);
-            var shareLink = new ShareLink(link, new Topic(model.Topic), sharer, new ListOfReceivers(receivers.ToArray()));
-            Actors.LinkCoordinator.Tell(shareLink);
+            var shareLink = new ShareLink(link, new Topic(model.Topic), emailOfSharer, nameOfSharer, new ListOfReceivers(receivers.ToArray()));
+            _bus.Send(shareLink);
             return Request.CreateResponse(HttpStatusCode.Created);
         }
     }

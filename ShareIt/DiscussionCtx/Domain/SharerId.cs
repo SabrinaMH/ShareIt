@@ -4,13 +4,16 @@ namespace ShareIt.DiscussionCtx.Domain
 {
     public class SharerId : Identity
     {
-        // TODO: For now this is just the email. Needs to be fixed.
+        private string _value;
+
         public SharerId(string value)
         {
-            if (String.IsNullOrWhiteSpace(value))
-                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", value));
+            _value = value;
+        }
 
-            Value = value;
+        public override string ToString()
+        {
+            return _value;
         }
     }
 }

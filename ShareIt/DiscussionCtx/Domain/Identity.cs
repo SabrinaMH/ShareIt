@@ -1,29 +1,12 @@
-﻿using System;
-
-namespace ShareIt.DiscussionCtx.Domain
+﻿namespace ShareIt.DiscussionCtx.Domain
 {
-    public class Identity
+    public abstract class Identity
     {
-        public Guid Value { get; protected set; }
-
-        public Identity()
-        {
-            Value = Guid.NewGuid();
-        }
-
-        public Identity(Guid id)
-        {
-            Value = id;
-        }
-
-        public static implicit operator Guid(Identity id)
-        {
-            return id.Value;
-        }
-
         public static implicit operator string(Identity id)
         {
-            return id.Value.ToString();
+            return id.ToString();
         }
+
+        public override abstract string ToString();
     }
 }

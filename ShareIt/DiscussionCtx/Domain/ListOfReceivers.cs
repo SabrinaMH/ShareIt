@@ -10,14 +10,14 @@ namespace ShareIt.DiscussionCtx.Domain
         {
             if (receivers == null || !receivers.Any())
                 throw new ArgumentException("Need at least one receiver", "receivers");
-            _receivers = receivers;
+            Receivers = receivers;
         }
 
-        private IList<Receiver> _receivers; 
+        public IList<Receiver> Receivers { get; private set; }
 
         public List<EmailAddress> GetEmails()
         {
-            return _receivers.Select(x => x.Email).ToList();
+            return Receivers.Select(x => x.Email).ToList();
         }
     }
 }

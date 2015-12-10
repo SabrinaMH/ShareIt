@@ -1,9 +1,8 @@
 ﻿using System;
-using Akka.Actor;
 
 namespace ShareIt.DiscussionCtx.Domain
 {
-    public class PostActor : ReceiveActor
+    public class PostActor 
     {
         public Poster Poster { get; private set; }
         public string BodyText { get; private set; }

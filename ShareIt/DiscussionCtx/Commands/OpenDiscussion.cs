@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ShareIt.DiscussionCtx.Domain;
 
-namespace ShareIt.DiscussionCtx.Messages
+namespace ShareIt.DiscussionCtx.Commands
 {
     public class OpenDiscussion 
     {

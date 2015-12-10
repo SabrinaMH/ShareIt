@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
-using Akka.Actor;
-using Akka.Event;
-using Akka.Logger.Serilog;
 using ShareIt.DiscussionCtx.Domain;
 using ShareIt.Infrastructure;
 
 namespace ShareIt.EventStore
 {
-    public abstract class AggregateRoot : ReceiveActor
+    public abstract class AggregateRoot 
     {
-        protected readonly ILoggingAdapter Logger = Context.GetLogger(new SerilogLogMessageFormatter());
         private readonly IList<Event> _changes = new List<Event>();
         public Identity Id { get; protected set; }
 

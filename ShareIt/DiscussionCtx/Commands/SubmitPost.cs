@@ -1,9 +1,10 @@
 ﻿using System;
 using ShareIt.DiscussionCtx.Domain;
+using ShareIt.Infrastructure;
 
-namespace ShareIt.DiscussionCtx.Messages
+namespace ShareIt.DiscussionCtx.Commands
 {
-    public class SubmitPost
+    public class SubmitPost : Command
     {
         public LinkId LinkId { get; private set; }
         public DiscussionId DiscussionId { get; private set; }

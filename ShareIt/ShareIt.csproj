@@ -42,10 +42,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akka, Version=1.0.5.14, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Akka.1.0.5\lib\net45\Akka.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EventStore.ClientAPI, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EventStore.Client.3.3.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
@@ -69,14 +65,6 @@
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Serilog, Version=1.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.1.3.43\lib\net45\Serilog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Serilog.FullNetFx, Version=1.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.1.3.43\lib\net45\Serilog.FullNetFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
@@ -135,33 +123,36 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DiscussionController.cs" />
     <Compile Include="Controllers\Models\PosterInputModel.cs" />
     <Compile Include="Controllers\Models\SubmitPostInputModel.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="DiscussionCtx\Commands\DiscussionCommandHandler.cs" />
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
+    <Compile Include="DiscussionCtx\Domain\Identity.cs" />
     <Compile Include="DiscussionCtx\Domain\Link.cs" />
-    <Compile Include="DiscussionCtx\Domain\LinkActor.cs" />
-    <Compile Include="DiscussionCtx\Domain\LinkCoordinatorActor.cs" />
     <Compile Include="DiscussionCtx\Domain\LinkId.cs" />
     <Compile Include="DiscussionCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Domain\PostActor.cs" />
     <Compile Include="DiscussionCtx\Domain\Poster.cs" />
+    <Compile Include="DiscussionCtx\Domain\SharerId.cs" />
     <Compile Include="DiscussionCtx\Events\DiscussionOpened.cs" />
     <Compile Include="DiscussionCtx\Events\LinkActorCreated.cs" />
     <Compile Include="DiscussionCtx\Events\PostPublished.cs" />
-    <Compile Include="DiscussionCtx\Messages\OpenDiscussion.cs" />
-    <Compile Include="DiscussionCtx\Messages\PublishPost.cs" />
-    <Compile Include="DiscussionCtx\Messages\ShareLink.cs" />
-    <Compile Include="DiscussionCtx\Messages\SubmitPost.cs" />
+    <Compile Include="DiscussionCtx\Commands\OpenDiscussion.cs" />
+    <Compile Include="DiscussionCtx\Commands\PublishPost.cs" />
+    <Compile Include="DiscussionCtx\Commands\ShareLink.cs" />
+    <Compile Include="DiscussionCtx\Commands\SubmitPost.cs" />
+    <Compile Include="DiscussionCtx\Events\SharedLink.cs" />
+    <Compile Include="DiscussionCtx\Events\SharerRegistered.cs" />
     <Compile Include="EventStore\EventStoreRepository.cs" />
-    <Compile Include="Infrastructure\Actors.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="Controllers\Models\ShareLinkInputModel.cs" />
     <Compile Include="Controllers\ShareLinkController.cs" />
-    <Compile Include="DiscussionCtx\Domain\DiscussionActor.cs" />
+    <Compile Include="DiscussionCtx\Domain\Discussion.cs" />
     <Compile Include="DiscussionCtx\Domain\Participant.cs" />
     <Compile Include="DiscussionCtx\Domain\Topic.cs" />
     <Compile Include="EventStore\AggregateRoot.cs" />
@@ -174,12 +165,10 @@
     <Compile Include="Infrastructure\UnimportantInfrastructureUtils.cs" />
     <Compile Include="NotificationCtx\NotificationEventHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DiscussionCtx\Domain\Identity.cs" />
     <Compile Include="NotificationCtx\DomainServices\MailService.cs" />
     <Compile Include="DiscussionCtx\Domain\Receiver.cs" />
     <Compile Include="DiscussionCtx\Domain\ListOfReceivers.cs" />
     <Compile Include="DiscussionCtx\Domain\Sharer.cs" />
-    <Compile Include="DiscussionCtx\Domain\SharerId.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
