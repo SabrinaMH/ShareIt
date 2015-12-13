@@ -12,6 +12,7 @@ using ShareIt.LinkCtx.Domain;
 using ShareIt.LinkCtx.Events;
 using ShareIt.NotificationCtx;
 using ShareIt.NotificationCtx.DomainServices;
+using ShareIt.ReadCtx;
 
 namespace ShareIt.Infrastructure
 {
@@ -99,6 +100,10 @@ namespace ShareIt.Infrastructure
             // NotificationCtx
             var mailService = new MailService(new SmtpClient(Settings.SmtpClientHost), Settings.ReadCredentials());
             bus.RegisterHandler<DiscussionOpened>(@event => new NotificationEventHandler(mailService).Handle(@event));
+
+            // ReadCtx
+            bus.RegisterHandler<DiscussionOpened>(@event => new ReadEventHandler().Handle(@event));
+            bus.RegisterHandler<PostSubmitted>(@event => new ReadEventHandler().Handle(@event));
 
             return bus;
         }
