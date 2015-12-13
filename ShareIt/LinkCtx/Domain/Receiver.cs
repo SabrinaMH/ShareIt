@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShareIt.DiscussionCtx.Domain
+namespace ShareIt.LinkCtx.Domain
 {
     public class Receiver
     {
@@ -11,5 +11,10 @@ namespace ShareIt.DiscussionCtx.Domain
         }
 
         public EmailAddress Email { get; private set; }
+
+        public static implicit operator string(Receiver receiver)
+        {
+            return receiver.Email;
+        }
     }
 }

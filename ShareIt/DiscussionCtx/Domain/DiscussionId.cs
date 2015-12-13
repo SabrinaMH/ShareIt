@@ -6,6 +6,11 @@ namespace ShareIt.DiscussionCtx.Domain
     {
         private readonly Guid _value;
 
+        public DiscussionId()
+        {
+            _value = Guid.NewGuid();
+        }
+
         public DiscussionId(Guid value)
         {
             _value = value;

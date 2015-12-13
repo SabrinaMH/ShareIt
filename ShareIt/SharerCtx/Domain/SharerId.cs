@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ShareIt.DiscussionCtx.Domain;
 
-namespace ShareIt.DiscussionCtx.Domain
+namespace ShareIt.SharerCtx.Domain
 {
     public class SharerId : Identity
     {

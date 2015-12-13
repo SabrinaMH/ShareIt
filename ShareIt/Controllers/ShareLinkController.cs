@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ShareIt.Controllers.Models;
-using ShareIt.DiscussionCtx.Commands;
-using ShareIt.DiscussionCtx.Domain;
+using ShareIt.LinkCtx.Commands;
 
 namespace ShareIt.Controllers
 {
@@ -21,11 +17,7 @@ namespace ShareIt.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Provided data is invalid");
             }
 
-            var link = new Link(new Uri(model.Link));
-            IEnumerable<Receiver> receivers = model.EmailsOfReceivers.Select(x => new Receiver(new EmailAddress(x)));
-            var emailOfSharer = new EmailAddress(model.EmailOfSharer);
-            var nameOfSharer = new Name(model.NameOfSharer);
-            var shareLink = new ShareLink(link, new Topic(model.Topic), emailOfSharer, nameOfSharer, new ListOfReceivers(receivers.ToArray()));
+            var shareLink = new ShareLink(model.Link, model.Topic, model.EmailOfSharer, model.NameOfSharer, model.EmailsOfReceivers);
             _bus.Send(shareLink);
             return Request.CreateResponse(HttpStatusCode.Created);
         }

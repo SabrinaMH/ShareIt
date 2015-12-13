@@ -1,20 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using ShareIt.DiscussionCtx.Domain;
+using System.Linq;
+using ShareIt.Infrastructure;
 
 namespace ShareIt.DiscussionCtx.Commands
 {
-    public class OpenDiscussion 
+    public class OpenDiscussion : Command
     {
-        public Topic Topic { get; private set; }
-        public List<Participant> BetweenWho { get; private set; }
+        public string LinkId { get; private set; }
+        public string Topic { get; private set; }
+        public string NameOfInitiator { get; private set; }
+        public string EmailOfInitiator { get; private set; }
+        public List<string> EmailsOfParticipants { get; private set; }
 
-        public OpenDiscussion(Topic topic, List<Participant> betweenWho)
+        public OpenDiscussion(string linkId, string topic, string nameOfInitiator, string emailOfInitiator, List<string> emailsOfParticipants)
         {
-            if (topic == null) throw new ArgumentNullException("topic");
-            if (betweenWho == null) throw new ArgumentNullException("betweenWho");
+            if (String.IsNullOrWhiteSpace(nameOfInitiator))
+                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", nameOfInitiator));
+            if (String.IsNullOrWhiteSpace(emailOfInitiator))
+                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", emailOfInitiator));
+            if (String.IsNullOrWhiteSpace(linkId))
+                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", linkId));
+            if (String.IsNullOrWhiteSpace(topic))
+                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", topic));
+            if (emailsOfParticipants == null || !emailsOfParticipants.Any())
+                throw new ArgumentException(String.Format("{0} cannot be null or empty", emailsOfParticipants));
+            LinkId = linkId;
             Topic = topic;
-            BetweenWho = betweenWho;
+            NameOfInitiator = nameOfInitiator;
+            EmailOfInitiator = emailOfInitiator;
+            EmailsOfParticipants = emailsOfParticipants;
         }
     }
 }

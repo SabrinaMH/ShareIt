@@ -46,6 +46,18 @@
       <HintPath>..\packages\EventStore.Client.3.3.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Glimpse.AspNet, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Glimpse.Core, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Glimpse.1.8.2\lib\net45\Glimpse.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Glimpse.Mvc5, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -133,22 +145,25 @@
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
     <Compile Include="DiscussionCtx\Domain\Identity.cs" />
-    <Compile Include="DiscussionCtx\Domain\Link.cs" />
-    <Compile Include="DiscussionCtx\Domain\LinkId.cs" />
+    <Compile Include="DiscussionCtx\Domain\Initiator.cs" />
+    <Compile Include="DiscussionCtx\Events\DiscussionEventHandler.cs" />
+    <Compile Include="DiscussionCtx\Events\PostSubmitted.cs" />
+    <Compile Include="LinkCtx\Domain\EmailAddress.cs" />
+    <Compile Include="LinkCtx\Domain\Link.cs" />
+    <Compile Include="LinkCtx\Domain\LinkId.cs" />
     <Compile Include="DiscussionCtx\Domain\Name.cs" />
-    <Compile Include="DiscussionCtx\Domain\PostActor.cs" />
+    <Compile Include="DiscussionCtx\Domain\Post.cs" />
     <Compile Include="DiscussionCtx\Domain\Poster.cs" />
-    <Compile Include="DiscussionCtx\Domain\SharerId.cs" />
+    <Compile Include="LinkCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Events\DiscussionOpened.cs" />
-    <Compile Include="DiscussionCtx\Events\LinkActorCreated.cs" />
-    <Compile Include="DiscussionCtx\Events\PostPublished.cs" />
     <Compile Include="DiscussionCtx\Commands\OpenDiscussion.cs" />
-    <Compile Include="DiscussionCtx\Commands\PublishPost.cs" />
-    <Compile Include="DiscussionCtx\Commands\ShareLink.cs" />
+    <Compile Include="LinkCtx\Commands\ShareLink.cs" />
     <Compile Include="DiscussionCtx\Commands\SubmitPost.cs" />
-    <Compile Include="DiscussionCtx\Events\SharedLink.cs" />
-    <Compile Include="DiscussionCtx\Events\SharerRegistered.cs" />
+    <Compile Include="LinkCtx\Events\LinkRegistered.cs" />
+    <Compile Include="LinkCtx\Events\SharedLink.cs" />
+    <Compile Include="SharerCtx\Events\SharerRegistered.cs" />
     <Compile Include="EventStore\EventStoreRepository.cs" />
+    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="Controllers\Models\ShareLinkInputModel.cs" />
     <Compile Include="Controllers\ShareLinkController.cs" />
@@ -163,12 +178,16 @@
     <Compile Include="Infrastructure\Event.cs" />
     <Compile Include="Infrastructure\Message.cs" />
     <Compile Include="Infrastructure\UnimportantInfrastructureUtils.cs" />
-    <Compile Include="NotificationCtx\NotificationEventHandlers.cs" />
+    <Compile Include="LinkCtx\Commands\LinkCommandHandler.cs" />
+    <Compile Include="LinkCtx\Domain\Topic.cs" />
+    <Compile Include="NotificationCtx\NotificationEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NotificationCtx\DomainServices\MailService.cs" />
-    <Compile Include="DiscussionCtx\Domain\Receiver.cs" />
-    <Compile Include="DiscussionCtx\Domain\ListOfReceivers.cs" />
-    <Compile Include="DiscussionCtx\Domain\Sharer.cs" />
+    <Compile Include="LinkCtx\Domain\Receiver.cs" />
+    <Compile Include="LinkCtx\Domain\ListOfReceivers.cs" />
+    <Compile Include="LinkCtx\Domain\Sharer.cs" />
+    <Compile Include="SharerCtx\Domain\Sharer.cs" />
+    <Compile Include="SharerCtx\Domain\SharerId.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +199,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

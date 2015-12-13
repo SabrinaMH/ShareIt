@@ -1,6 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Mail;
 using System.Threading;
+using ShareIt.DiscussionCtx.Commands;
+using ShareIt.DiscussionCtx.Domain;
+using ShareIt.DiscussionCtx.Events;
+using ShareIt.EventStore;
+using ShareIt.LinkCtx.Commands;
+using ShareIt.LinkCtx.Domain;
+using ShareIt.LinkCtx.Events;
+using ShareIt.NotificationCtx;
+using ShareIt.NotificationCtx.DomainServices;
 
 namespace ShareIt.Infrastructure
 {
@@ -67,10 +78,27 @@ namespace ShareIt.Infrastructure
         public static Bus Bootstrap()
         {
             var bus = new Bus();
+            var discussionRepository = new EventStoreRepository<Discussion>(bus);
 
             // Command handlers
 
+            // DiscussionCtx
+            bus.RegisterHandler<OpenDiscussion>(cmd => new DiscussionCommandHandler(discussionRepository).Handle(cmd));
+            bus.RegisterHandler<SubmitPost>(cmd => new DiscussionCommandHandler(discussionRepository).Handle(cmd));
+
+            // LinkCtx
+            bus.RegisterHandler<ShareLink>(
+                cmd => new LinkCommandHandler(new EventStoreRepository<Link>(bus)).Handle(cmd));
+
+
             // Event handlers
+
+            // LinkCtx
+            bus.RegisterHandler<SharedLink>(@event => new DiscussionEventHandler().Handle(@event));
+
+            // NotificationCtx
+            var mailService = new MailService(new SmtpClient(Settings.SmtpClientHost), Settings.ReadCredentials());
+            bus.RegisterHandler<DiscussionOpened>(@event => new NotificationEventHandler(mailService).Handle(@event));
 
             return bus;
         }

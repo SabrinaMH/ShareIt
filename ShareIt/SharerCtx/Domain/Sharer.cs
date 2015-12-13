@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using ShareIt.DiscussionCtx.Events;
+using ShareIt.DiscussionCtx.Domain;
 using ShareIt.EventStore;
 using ShareIt.Infrastructure;
+using ShareIt.SharerCtx.Events;
 
-namespace ShareIt.DiscussionCtx.Domain
+namespace ShareIt.SharerCtx.Domain
 {
     public class Sharer : AggregateRoot
     {
@@ -19,14 +19,14 @@ namespace ShareIt.DiscussionCtx.Domain
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
 
-            ApplyChange(new SharerRegistered((SharerId)Id, name, email));
+            ApplyChange(new SharerRegistered(Id, name, email));
         }
 
         private void Apply(SharerRegistered @event)
         {
-            Id = @event.Id;
-            _name = @event.Name;
-            _email = @event.Email;
+            Id = new SharerId(@event.Id);
+            _name = new Name(@event.Name);
+            _email = new EmailAddress(@event.Email);
         }
     }
 }

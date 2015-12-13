@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShareIt.DiscussionCtx.Domain
+namespace ShareIt.LinkCtx.Domain
 {
     public class ListOfReceivers
     {

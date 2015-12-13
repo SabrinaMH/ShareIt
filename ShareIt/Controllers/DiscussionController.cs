@@ -4,8 +4,6 @@ using System.Net.Http;
 using System.Web.Http;
 using ShareIt.Controllers.Models;
 using ShareIt.DiscussionCtx.Commands;
-using ShareIt.DiscussionCtx.Domain;
-using ShareIt.Infrastructure;
 
 namespace ShareIt.Controllers
 {
@@ -13,15 +11,14 @@ namespace ShareIt.Controllers
     public class DiscussionController : BaseController
     {
         [Route("{discussionId}")]
-        public HttpResponseMessage Post(string linkId, Guid discussionId, [FromBody] SubmitPostInputModel model)
+        public HttpResponseMessage Post(Guid discussionId, [FromBody] SubmitPostInputModel model)
         {
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Provided data is invalid");                
             }
 
-            var poster = new Poster(new Name(model.Poster.Name), new EmailAddress(model.Poster.Email));
-            var submitPost = new SubmitPost(new LinkId(linkId), new DiscussionId(discussionId), poster, model.BodyText);
+            var submitPost = new SubmitPost(discussionId, model.Poster.Name, model.Poster.Email, model.BodyText);
             _bus.Send(submitPost);
             return Request.CreateResponse(HttpStatusCode.Created);
         }
