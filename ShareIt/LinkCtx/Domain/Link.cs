@@ -28,7 +28,7 @@ namespace ShareIt.LinkCtx.Domain
 
         public void Apply(LinkRegistered @event)
         {
-            Id = new LinkId(@event.Id);
+            Id = new LinkId(@event.LinkId);
             _uriOfLink = new Uri(@event.Uri);
         }
 

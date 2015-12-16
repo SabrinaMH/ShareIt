@@ -24,7 +24,7 @@ namespace ShareIt.SharerCtx.Domain
 
         private void Apply(SharerRegistered @event)
         {
-            Id = new SharerId(@event.Id);
+            Id = new SharerId(@event.SharerId);
             _name = new Name(@event.Name);
             _email = new EmailAddress(@event.Email);
         }

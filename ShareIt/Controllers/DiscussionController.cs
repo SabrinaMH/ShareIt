@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Web.Http;
 using ShareIt.Controllers.Models;
 using ShareIt.DiscussionCtx.Commands;
-using ShareIt.ReadCtx;
 using ShareIt.ReadCtx.Queries;
 
 namespace ShareIt.Controllers
@@ -18,7 +17,7 @@ namespace ShareIt.Controllers
             var discussionQueryHandler = new DiscussionQueryHandler();
             var discussionByIdQuery = new DiscussionByIdQuery(discussionId);
             discussionQueryHandler.Handle(discussionByIdQuery);
-
+            return null;
         }
 
         [Route("{discussionId}")]

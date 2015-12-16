@@ -1,16 +1,19 @@
-﻿using ShareIt.Infrastructure;
+﻿using System;
+using ShareIt.Infrastructure;
 
 namespace ShareIt.LinkCtx.Events
 {
     public class LinkRegistered : Event
     {
-        public string Id { get; private set; }
+        public string LinkId { get; private set; }
         public string Uri { get; private set; }
 
-        public LinkRegistered(string id, string uri)
+        public LinkRegistered(string linkId, string uri)
         {
-            Id = id;
+            LinkId = linkId;
             Uri = uri;
+            Id = Guid.NewGuid();
+            Version = 0;
         }
     }
 }

@@ -42,6 +42,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Couchbase.NetClient, Version=2.2.2.0, Culture=neutral, PublicKeyToken=05e9c6b5a9ec94c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\CouchbaseNetClient.2.2.2\lib\net45\Couchbase.NetClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EventStore.ClientAPI, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EventStore.Client.3.3.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
@@ -149,6 +161,11 @@
     <Compile Include="DiscussionCtx\Commands\SubmitPost.cs" />
     <Compile Include="LinkCtx\Events\LinkRegistered.cs" />
     <Compile Include="LinkCtx\Events\SharedLink.cs" />
+    <Compile Include="Persistence\Couchbase.cs" />
+    <Compile Include="ReadCtx\Models\Discussion.cs" />
+    <Compile Include="ReadCtx\Models\Participant.cs" />
+    <Compile Include="ReadCtx\Models\Post.cs" />
+    <Compile Include="ReadCtx\Models\Poster.cs" />
     <Compile Include="ReadCtx\Queries\DiscussionByIdQuery.cs" />
     <Compile Include="ReadCtx\Queries\DiscussionQueryHandler.cs" />
     <Compile Include="ReadCtx\ReadEventHandler.cs" />

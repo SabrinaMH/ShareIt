@@ -31,7 +31,7 @@ namespace ShareIt.DiscussionCtx.Domain
 
         public void SubmitPost(Post post)
         {
-            ApplyChange(new PostSubmitted(post.Poster.Name, post.Poster.EmailAddress, post.BodyText));
+            ApplyChange(new PostSubmitted(Id.ToString(), post.Poster.Name, post.Poster.EmailAddress, post.BodyText));
         }
 
         private void Apply(DiscussionOpened discussion)

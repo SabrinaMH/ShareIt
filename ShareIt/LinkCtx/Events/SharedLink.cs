@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ShareIt.Infrastructure;
 
 namespace ShareIt.LinkCtx.Events
@@ -20,6 +21,8 @@ namespace ShareIt.LinkCtx.Events
             EmailOfSharer = emailOfSharer;
             Topic = topic;
             EmailsOfReceivers = emailsOfReceivers;
+            Id = Guid.NewGuid();
+            Version = 0;
         }
     }
 }

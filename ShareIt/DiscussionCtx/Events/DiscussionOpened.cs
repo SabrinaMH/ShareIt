@@ -21,6 +21,8 @@ namespace ShareIt.DiscussionCtx.Events
             NameOfInitiator = nameOfInitiator;
             EmailOfInitiator = emailOfInitiator;
             EmailsOfTheOtherParticipants = emailsOfTheOtherParticipants;
+            Id = Guid.NewGuid();
+            Version = 0;
         }
     }
 }
