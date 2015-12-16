@@ -25,7 +25,7 @@ namespace ShareIt.EventStore
             if (bus == null) throw new ArgumentNullException("bus");
             _bus = bus;
 
-            _connection = EventStoreConnection.Create(new IPEndPoint(IPAddress.Loopback, 1113));
+            _connection = EventStoreConnection.Create("http://192.168.50.11:1113");
             _connection.ConnectAsync().Wait();
         }
 
