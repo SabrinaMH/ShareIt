@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using ShareIt.DiscussionCtx.Domain;
 using ShareIt.EventStore;
 using ShareIt.Infrastructure;
-using ShareIt.SharerCtx.Events;
+using ShareIt.UserCtx.Events;
 
-namespace ShareIt.SharerCtx.Domain
+namespace ShareIt.UserCtx.Domain
 {
-    public class Sharer : AggregateRoot
+    public class User : AggregateRoot
     {
         private Name _name;
         private EmailAddress _email;
 
-        public Sharer(IList<Event> history) : base(history) { }
+        public User(IList<Event> history) : base(history) { }
 
-        public Sharer(Name name, EmailAddress email) : base(new SharerId(email))
+        public User(Name name, EmailAddress email) : base(new UserId(email))
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
 
-            ApplyChange(new SharerRegistered(Id, name, email));
+            ApplyChange(new UserRegistered(Id, name, email));
         }
 
-        private void Apply(SharerRegistered @event)
+        private void Apply(UserRegistered @event)
         {
-            Id = new SharerId(@event.SharerId);
+            Id = new UserId(@event.UserId);
             _name = new Name(@event.Name);
             _email = new EmailAddress(@event.Email);
         }

@@ -3,12 +3,12 @@
     public class Post
     {
         public string BodyText { get; set; }
-        public Poster Poster { get; set; }
+        public string NameOfPoster { get; set; }
 
-        public Post(string bodyText, Poster poster)
+        public Post(string bodyText, string nameOfPoster)
         {
             BodyText = bodyText;
-            Poster = poster;
+            NameOfPoster = nameOfPoster;
         }
     }
 }

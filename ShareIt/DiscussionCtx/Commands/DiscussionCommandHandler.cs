@@ -22,7 +22,7 @@ namespace ShareIt.DiscussionCtx.Commands
             var participants = openDiscussion.EmailsOfParticipants.Select(x => new Participant(new EmailAddress(x))).ToList();
             var linkId = new LinkId(openDiscussion.LinkId);
             var topic = new Topic(openDiscussion.Topic);
-            var initiator = new Initiator(new Name(openDiscussion.NameOfInitiator), new EmailAddress(openDiscussion.EmailOfInitiator));
+            var initiator = new Participant(new Name(openDiscussion.NameOfInitiator), new EmailAddress(openDiscussion.EmailOfInitiator));
             var discussion = new Discussion(linkId, topic, initiator, participants);
             _repository.Save(discussion);
         }

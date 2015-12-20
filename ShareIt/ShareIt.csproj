@@ -145,7 +145,6 @@
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
     <Compile Include="DiscussionCtx\Domain\Identity.cs" />
-    <Compile Include="DiscussionCtx\Domain\Initiator.cs" />
     <Compile Include="DiscussionCtx\Events\DiscussionEventHandler.cs" />
     <Compile Include="DiscussionCtx\Events\PostSubmitted.cs" />
     <Compile Include="LinkCtx\Domain\EmailAddress.cs" />
@@ -162,14 +161,14 @@
     <Compile Include="LinkCtx\Events\LinkRegistered.cs" />
     <Compile Include="LinkCtx\Events\SharedLink.cs" />
     <Compile Include="Persistence\Couchbase.cs" />
+    <Compile Include="ReadCtx\Models\BaseDocument.cs" />
     <Compile Include="ReadCtx\Models\Discussion.cs" />
-    <Compile Include="ReadCtx\Models\Participant.cs" />
+    <Compile Include="ReadCtx\Models\Link.cs" />
     <Compile Include="ReadCtx\Models\Post.cs" />
-    <Compile Include="ReadCtx\Models\Poster.cs" />
     <Compile Include="ReadCtx\Queries\DiscussionByIdQuery.cs" />
     <Compile Include="ReadCtx\Queries\DiscussionQueryHandler.cs" />
     <Compile Include="ReadCtx\ReadEventHandler.cs" />
-    <Compile Include="SharerCtx\Events\SharerRegistered.cs" />
+    <Compile Include="UserCtx\Events\UserRegistered.cs" />
     <Compile Include="EventStore\EventStoreRepository.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="Controllers\Models\ShareLinkInputModel.cs" />
@@ -193,8 +192,8 @@
     <Compile Include="LinkCtx\Domain\Receiver.cs" />
     <Compile Include="LinkCtx\Domain\ListOfReceivers.cs" />
     <Compile Include="LinkCtx\Domain\Sharer.cs" />
-    <Compile Include="SharerCtx\Domain\Sharer.cs" />
-    <Compile Include="SharerCtx\Domain\SharerId.cs" />
+    <Compile Include="UserCtx\Domain\User.cs" />
+    <Compile Include="UserCtx\Domain\UserId.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

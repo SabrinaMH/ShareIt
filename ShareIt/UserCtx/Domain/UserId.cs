@@ -1,12 +1,12 @@
 ﻿using ShareIt.DiscussionCtx.Domain;
 
-namespace ShareIt.SharerCtx.Domain
+namespace ShareIt.UserCtx.Domain
 {
-    public class SharerId : Identity
+    public class UserId : Identity
     {
         private string _value;
 
-        public SharerId(string value)
+        public UserId(string value)
         {
             _value = value;
         }

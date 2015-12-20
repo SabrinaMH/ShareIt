@@ -22,7 +22,6 @@ namespace ShareIt.LinkCtx.Events
             Topic = topic;
             EmailsOfReceivers = emailsOfReceivers;
             Id = Guid.NewGuid();
-            Version = 0;
         }
     }
 }

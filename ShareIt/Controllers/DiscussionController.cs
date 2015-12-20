@@ -2,8 +2,10 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using ShareIt.Controllers.Models;
 using ShareIt.DiscussionCtx.Commands;
+using ShareIt.ReadCtx.Models;
 using ShareIt.ReadCtx.Queries;
 
 namespace ShareIt.Controllers
@@ -12,6 +14,7 @@ namespace ShareIt.Controllers
     public class DiscussionController : BaseController
     {
         [Route("{discussionId}")]
+        [ResponseType(typeof(Discussion))]
         public HttpResponseMessage Get(Guid discussionId)
         {
             var discussionQueryHandler = new DiscussionQueryHandler();

@@ -6,7 +6,6 @@
 *.user
 *.sln.docstates
 .vagrant/
-couchbase-server*
 
 # Build results
 [Dd]ebug/

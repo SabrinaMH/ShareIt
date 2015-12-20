@@ -17,7 +17,7 @@ namespace ShareIt.DiscussionCtx.Domain
 
         public Discussion(IList<Event> history) : base(history) { }
 
-        public Discussion(LinkId linkId, Topic topic, Initiator initiator, List<Participant> theOtherParticipants)
+        public Discussion(LinkId linkId, Topic topic, Participant initiator, List<Participant> theOtherParticipants)
             : base(new DiscussionId())
         {
             if (linkId == null) throw new ArgumentNullException("linkId");

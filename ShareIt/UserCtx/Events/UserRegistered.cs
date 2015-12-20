@@ -1,21 +1,20 @@
 ﻿using System;
 using ShareIt.Infrastructure;
 
-namespace ShareIt.SharerCtx.Events
+namespace ShareIt.UserCtx.Events
 {
-    public class SharerRegistered : Event
+    public class UserRegistered : Event
     {
-        public string SharerId { get; private set; }
+        public string UserId { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
 
-        public SharerRegistered(string sharerId, string name, string email)
+        public UserRegistered(string userId, string name, string email)
         {
-            SharerId = sharerId;
+            UserId = userId;
             Name = name;
             Email = email;
             Id = Guid.NewGuid();
-            Version = 0;
         }
     }
 }

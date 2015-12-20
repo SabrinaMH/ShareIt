@@ -17,7 +17,6 @@ namespace ShareIt.DiscussionCtx.Events
             EmailAddressOfPoster = emailAddressOfPoster;
             BodyText = bodyText;
             Id = Guid.NewGuid();
-            Version = 1;
         }
     }
 }

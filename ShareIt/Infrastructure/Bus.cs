@@ -104,6 +104,7 @@ namespace ShareIt.Infrastructure
             // ReadCtx
             bus.RegisterHandler<DiscussionOpened>(@event => new ReadEventHandler().Handle(@event));
             bus.RegisterHandler<PostSubmitted>(@event => new ReadEventHandler().Handle(@event));
+            bus.RegisterHandler<SharedLink>(@event => new ReadEventHandler().Handle(@event));
 
             return bus;
         }

@@ -13,7 +13,6 @@ namespace ShareIt.LinkCtx.Events
             LinkId = linkId;
             Uri = uri;
             Id = Guid.NewGuid();
-            Version = 0;
         }
     }
 }
