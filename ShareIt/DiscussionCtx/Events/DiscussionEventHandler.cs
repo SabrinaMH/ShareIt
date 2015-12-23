@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Couchbase.Views;
 using ShareIt.DiscussionCtx.Commands;
 using ShareIt.Infrastructure;
 using ShareIt.LinkCtx.Events;
+using ShareIt.UserCtx.Events;
 
 namespace ShareIt.DiscussionCtx.Events
 {
@@ -16,9 +17,8 @@ namespace ShareIt.DiscussionCtx.Events
 
         public void Handle(SharedLink @event)
         {
-            var openDiscussion = new OpenDiscussion(@event.LinkId, @event.Topic, @event.NameOfSharer, @event.EmailOfSharer, @event.EmailsOfReceivers);
+            var openDiscussion = new OpenDiscussion(@event.LinkId, @event.Topic, @event.EmailOfSharer, @event.EmailsOfReceivers);
             _bus.Send(openDiscussion);
         }
-
     }
 }

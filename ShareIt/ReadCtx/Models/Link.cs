@@ -4,12 +4,12 @@ namespace ShareIt.ReadCtx.Models
 {
     public class Link : BaseDocument
     {
-        public string Uri { get; set; }
+        public string Url { get; set; }
 
-        public Link(string uri)
+        public Link(string url)
             : base("link")
         {
-            Uri = uri;
+            Url = url;
         }
     }
 }

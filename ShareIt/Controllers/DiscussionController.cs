@@ -5,8 +5,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using ShareIt.Controllers.Models;
 using ShareIt.DiscussionCtx.Commands;
+using ShareIt.DiscussionCtx.Queries;
 using ShareIt.ReadCtx.Models;
-using ShareIt.ReadCtx.Queries;
 
 namespace ShareIt.Controllers
 {
@@ -31,9 +31,12 @@ namespace ShareIt.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Provided data is invalid");                
             }
 
-            var submitPost = new SubmitPost(discussionId, model.Poster.Name, model.Poster.Email, model.BodyText);
+            var submitPost = new SubmitPost(discussionId, model.EmailOfPoster, model.BodyText);
             _bus.Send(submitPost);
-            return Request.CreateResponse(HttpStatusCode.Created);
+            
+            var response = Request.CreateResponse(HttpStatusCode.Created);
+            response.Headers.Location = new Uri(Request.RequestUri, discussionId.ToString());
+            return response;
         }
     }
 }

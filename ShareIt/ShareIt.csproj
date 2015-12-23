@@ -137,10 +137,11 @@
   <ItemGroup>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DiscussionController.cs" />
-    <Compile Include="Controllers\Models\PosterInputModel.cs" />
     <Compile Include="Controllers\Models\SubmitPostInputModel.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Models\RegisterUserInputModel.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DiscussionCtx\Commands\DiscussionCommandHandler.cs" />
     <Compile Include="DiscussionCtx\Domain\DiscussionId.cs" />
     <Compile Include="DiscussionCtx\Domain\EmailAddress.cs" />
@@ -152,7 +153,6 @@
     <Compile Include="LinkCtx\Domain\LinkId.cs" />
     <Compile Include="DiscussionCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Domain\Post.cs" />
-    <Compile Include="DiscussionCtx\Domain\Poster.cs" />
     <Compile Include="LinkCtx\Domain\Name.cs" />
     <Compile Include="DiscussionCtx\Events\DiscussionOpened.cs" />
     <Compile Include="DiscussionCtx\Commands\OpenDiscussion.cs" />
@@ -160,14 +160,23 @@
     <Compile Include="DiscussionCtx\Commands\SubmitPost.cs" />
     <Compile Include="LinkCtx\Events\LinkRegistered.cs" />
     <Compile Include="LinkCtx\Events\SharedLink.cs" />
+    <Compile Include="NotificationCtx\Commands\NotificationCommandHandler.cs" />
+    <Compile Include="NotificationCtx\Commands\SendLinkSharedNotification.cs" />
+    <Compile Include="NotificationCtx\Queries\LinkByIdQuery.cs" />
+    <Compile Include="NotificationCtx\Queries\NotificationQueryHandler.cs" />
     <Compile Include="Persistence\Couchbase.cs" />
     <Compile Include="ReadCtx\Models\BaseDocument.cs" />
     <Compile Include="ReadCtx\Models\Discussion.cs" />
+    <Compile Include="ReadCtx\Models\DiscussionWithNamesView.cs" />
     <Compile Include="ReadCtx\Models\Link.cs" />
     <Compile Include="ReadCtx\Models\Post.cs" />
-    <Compile Include="ReadCtx\Queries\DiscussionByIdQuery.cs" />
-    <Compile Include="ReadCtx\Queries\DiscussionQueryHandler.cs" />
+    <Compile Include="DiscussionCtx\Queries\DiscussionByIdQuery.cs" />
+    <Compile Include="DiscussionCtx\Queries\DiscussionQueryHandler.cs" />
+    <Compile Include="ReadCtx\Models\User.cs" />
     <Compile Include="ReadCtx\ReadEventHandler.cs" />
+    <Compile Include="UserCtx\Commands\RegisterUser.cs" />
+    <Compile Include="UserCtx\Commands\UserCommandHandler.cs" />
+    <Compile Include="UserCtx\Domain\EmailAlreadyRegisteredException.cs" />
     <Compile Include="UserCtx\Events\UserRegistered.cs" />
     <Compile Include="EventStore\EventStoreRepository.cs" />
     <Compile Include="Infrastructure\Settings.cs" />

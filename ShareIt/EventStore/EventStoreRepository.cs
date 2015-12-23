@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -25,7 +26,8 @@ namespace ShareIt.EventStore
             if (bus == null) throw new ArgumentNullException("bus");
             _bus = bus;
 
-            _connection = EventStoreConnection.Create("http://192.168.50.11:1113");
+            var url = ConfigurationManager.AppSettings["eventstore.connection.url"];
+            _connection = EventStoreConnection.Create(url);
             _connection.ConnectAsync().Wait();
         }
 

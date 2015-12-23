@@ -2,7 +2,7 @@
 
 namespace ShareIt.Controllers.Models
 {
-    public class PosterInputModel
+    public class RegisterUserInputModel
     {
         [Required]
         public string Name { get; set; }

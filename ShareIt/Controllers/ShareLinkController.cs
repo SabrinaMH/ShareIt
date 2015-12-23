@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ShareIt.Controllers.Models;
@@ -17,9 +18,10 @@ namespace ShareIt.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Provided data is invalid");
             }
 
-            var shareLink = new ShareLink(model.Link, model.Topic, model.EmailOfSharer, model.NameOfSharer, model.EmailsOfReceivers);
+            var shareLink = new ShareLink(model.Link, model.Topic, model.EmailOfSharer, model.EmailsOfReceivers);
             _bus.Send(shareLink);
-            return Request.CreateResponse(HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created);
+            return response;
         }
     }
 }

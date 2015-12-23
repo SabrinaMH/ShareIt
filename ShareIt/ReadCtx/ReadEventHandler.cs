@@ -1,7 +1,10 @@
-﻿using Couchbase;
+﻿using System.Collections.Generic;
+using Couchbase;
+using Couchbase.Core;
 using ShareIt.DiscussionCtx.Events;
 using ShareIt.LinkCtx.Events;
 using ShareIt.ReadCtx.Models;
+using ShareIt.UserCtx.Events;
 
 namespace ShareIt.ReadCtx
 {
@@ -11,7 +14,7 @@ namespace ShareIt.ReadCtx
         {
             using (var bucket = Persistence.Couchbase.Cluster.OpenBucket())
             {
-                var link = new Link(@event.UriOflink);
+                var link = new Link(@event.UrlOflink);
                 var document = new Document<Link>
                 {
                     Id = @event.LinkId,
@@ -26,8 +29,18 @@ namespace ShareIt.ReadCtx
             using (var bucket = Persistence.Couchbase.Cluster.OpenBucket())
             {
                 var link = bucket.GetDocument<Link>(@event.LinkId);
-                // Until we have the names of the other participants, we use their emails
-                var discussion = new Discussion(@event.Topic, @event.NameOfInitiator, @event.EmailsOfTheOtherParticipants, link.Content.Uri);
+                var user = bucket.GetDocument<User>(@event.EmailOfInitiator);
+                // Use email if participant isn't registered within the system
+                var nameOfInitiator = (user != null) ? user.Content.Name : @event.EmailOfInitiator;
+                var namesOfParticipants = new List<string>();
+                foreach (var emailOfParticipant in @event.EmailsOfParticipants)
+                {
+                    var participant = bucket.GetDocument<User>(emailOfParticipant);
+                    var nameOfParticipant = (participant != null) ? participant.Content.Name : emailOfParticipant;
+                    namesOfParticipants.Add(nameOfParticipant);
+                }
+                var discussion = new Discussion(@event.Topic, nameOfInitiator,
+                    namesOfParticipants, link.Content.Url);
 
                 var document = new Document<Discussion>
                 {
@@ -43,9 +56,23 @@ namespace ShareIt.ReadCtx
             using (var bucket = Persistence.Couchbase.Cluster.OpenBucket())
             {
                 var discussion = bucket.GetDocument<Discussion>(@event.DiscussionId);
-                var post = new Post(@event.BodyText, @event.NameOfPoster);
+                var post = new Post(@event.BodyText, @event.EmailAddressOfPoster, @event.PostNumber);
                 discussion.Content.Posts.Add(post);
                 bucket.Upsert(discussion.Document);
+            }
+        }
+
+        public void Handle(UserRegistered @event)
+        {
+            using (var bucket = Persistence.Couchbase.Cluster.OpenBucket())
+            {
+                var user = new User(@event.Name, @event.Email);
+                var document = new Document<User>
+                {
+                    Id = @event.UserId,
+                    Content = user
+                };
+                bucket.Insert(document);
             }
         }
     }

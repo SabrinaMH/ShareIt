@@ -9,33 +9,33 @@ namespace ShareIt.LinkCtx.Domain
 {
     public class Link : AggregateRoot
     {
-        private Uri _uriOfLink;
+        private Uri _urlOfLink;
 
         public Link(IList<Event> history) : base(history) { }
 
-        public Link(Uri uri)
-            : base(new LinkId(uri.OriginalString))
+        public Link(Uri url)
+            : base(new LinkId(url.OriginalString))
         {
-            if (uri == null) throw new ArgumentNullException("uri");
+            if (url == null) throw new ArgumentNullException("url");
 
-            ApplyChange(new LinkRegistered(Id, uri.OriginalString));
+            ApplyChange(new LinkRegistered(Id, url.OriginalString));
         }
 
         public override string ToString()
         {
-            return _uriOfLink.OriginalString;
+            return _urlOfLink.OriginalString;
         }
 
         public void Apply(LinkRegistered @event)
         {
             Id = new LinkId(@event.LinkId);
-            _uriOfLink = new Uri(@event.Uri);
+            _urlOfLink = new Uri(@event.Url);
         }
 
         public void Share(Topic topic, Sharer sharer, ListOfReceivers receivers)
         {
             var emailsOfReceivers = receivers.GetEmails().Select<EmailAddress, string>(x => x).ToList();
-            ApplyChange(new SharedLink(Id, this.ToString(), sharer.Name, sharer.Email, topic, emailsOfReceivers));
+            ApplyChange(new SharedLink(Id, this.ToString(), sharer.Email, topic, emailsOfReceivers));
         }
     }
 }

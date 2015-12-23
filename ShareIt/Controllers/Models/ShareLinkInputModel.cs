@@ -6,9 +6,6 @@ namespace ShareIt.Controllers.Models
     public class ShareLinkInputModel
     {
         [Required]
-        public string NameOfSharer { get; set; }
-
-        [Required]
         public string EmailOfSharer { get; set; }
 
         [Required]

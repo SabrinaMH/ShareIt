@@ -4,17 +4,20 @@ namespace ShareIt.DiscussionCtx.Domain
 {
     public class Post 
     {
-        public Poster Poster { get; private set; }
+        public EmailAddress EmailOfPoster { get; private set; }
         public string BodyText { get; private set; }
+        public int PostNumber { get; private set; }
 
-        public Post(Poster poster, string bodyText)
+        public Post(EmailAddress emailOfPoster, string bodyText, int postNumber)
         {
             if (String.IsNullOrWhiteSpace(bodyText))
                 throw new ArgumentException(String.Format("{0} cannot be null or white spaces", bodyText));
-            if (poster == null) throw new ArgumentNullException("poster");
+            if (emailOfPoster == null) throw new ArgumentNullException("emailOfPoster");
+            if (postNumber < 0) throw new ArgumentException(string.Format("{0} cannot be negative", postNumber));
 
-            Poster = poster;
+            EmailOfPoster = emailOfPoster;
             BodyText = bodyText;
+            PostNumber = postNumber;
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using Couchbase;
-using ShareIt.Controllers.Models;
-using ShareIt.ReadCtx.Models;
+﻿using ShareIt.ReadCtx.Models;
 
-namespace ShareIt.ReadCtx.Queries
+namespace ShareIt.DiscussionCtx.Queries
 {
     public class DiscussionQueryHandler
     {

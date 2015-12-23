@@ -5,7 +5,7 @@ namespace ShareIt.Controllers.Models
     public class SubmitPostInputModel
     {
         [Required]
-        public PosterInputModel Poster { get; set; }
+        public string EmailOfPoster { get; set; }
         
         [Required]
         public string BodyText { get; set; }

@@ -9,27 +9,23 @@ namespace ShareIt.DiscussionCtx.Commands
     {
         public string LinkId { get; private set; }
         public string Topic { get; private set; }
-        public string NameOfInitiator { get; private set; }
-        public string EmailOfInitiator { get; private set; }
-        public List<string> EmailsOfParticipants { get; private set; }
+        public string IdOfInitiator { get; private set; }
+        public List<string> IdsOfParticipants { get; private set; }
 
-        public OpenDiscussion(string linkId, string topic, string nameOfInitiator, string emailOfInitiator, List<string> emailsOfParticipants)
+        public OpenDiscussion(string linkId, string topic, string idOfInitiator, List<string> idsOfParticipants)
         {
-            if (String.IsNullOrWhiteSpace(nameOfInitiator))
-                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", nameOfInitiator));
-            if (String.IsNullOrWhiteSpace(emailOfInitiator))
-                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", emailOfInitiator));
+            if (String.IsNullOrWhiteSpace(idOfInitiator))
+                throw new ArgumentException(String.Format("{0} cannot be null or white spaces", idOfInitiator));
             if (String.IsNullOrWhiteSpace(linkId))
                 throw new ArgumentException(String.Format("{0} cannot be null or white spaces", linkId));
             if (String.IsNullOrWhiteSpace(topic))
                 throw new ArgumentException(String.Format("{0} cannot be null or white spaces", topic));
-            if (emailsOfParticipants == null || !emailsOfParticipants.Any())
-                throw new ArgumentException(String.Format("{0} cannot be null or empty", emailsOfParticipants));
+            if (IdsOfParticipants == null || !IdsOfParticipants.Any())
+                throw new ArgumentException(String.Format("{0} cannot be null or empty", IdsOfParticipants));
             LinkId = linkId;
             Topic = topic;
-            NameOfInitiator = nameOfInitiator;
-            EmailOfInitiator = emailOfInitiator;
-            EmailsOfParticipants = emailsOfParticipants;
+            IdOfInitiator = idOfInitiator;
+            IdsOfParticipants = idsOfParticipants;
         }
     }
 }

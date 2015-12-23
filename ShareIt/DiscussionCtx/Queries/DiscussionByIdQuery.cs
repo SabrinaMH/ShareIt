@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShareIt.ReadCtx.Queries
+namespace ShareIt.DiscussionCtx.Queries
 {
     public class DiscussionByIdQuery
     {

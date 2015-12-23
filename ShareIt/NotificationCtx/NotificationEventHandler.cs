@@ -1,29 +1,27 @@
-﻿using System.Net.Mail;
-using ShareIt.DiscussionCtx.Events;
-using ShareIt.LinkCtx.Events;
-using ShareIt.NotificationCtx.DomainServices;
+﻿using ShareIt.DiscussionCtx.Events;
+using ShareIt.Infrastructure;
+using ShareIt.NotificationCtx.Commands;
+using ShareIt.NotificationCtx.Queries;
 
 namespace ShareIt.NotificationCtx
 {
     public class NotificationEventHandler
     {
-        private readonly MailService _mailService;
+        private readonly Bus _bus;
 
-        public NotificationEventHandler(MailService mailService)
+        public NotificationEventHandler()
         {
-            _mailService = mailService;
+            _bus = Bus.Instance;
         }
 
         public void Handle(DiscussionOpened @event)
         {
-            var mail = new MailMessage();
-            string receivers = string.Join(",", @event.EmailsOfTheOtherParticipants);
-            mail.To.Add(receivers);
-            mail.From = new MailAddress(@event.EmailOfInitiator);
-            mail.Subject = string.Format("{0} shared a link on {1}", @event.NameOfInitiator, @event.Topic);
-            mail.Body = string.Format("To view the link use link id {0}\\To join the discussion use discussion id {1}", @event.LinkId, @event.DiscussionId);
+            var query = new LinkByIdQuery(@event.LinkId);
+            var queryHandler = new NotificationQueryHandler();
+            var link = queryHandler.Handle(query);
 
-            _mailService.Send(mail);
+            var sendNotification = new SendLinkSharedNotification(@event.EmailOfInitiator, @event.EmailsOfParticipants, @event.Topic, @event.DiscussionId, link.Url);
+            _bus.Send(sendNotification);
         }
     }
 }

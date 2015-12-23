@@ -7,16 +7,16 @@ namespace ShareIt.ReadCtx.Models
     {
         public string Topic { get; set; }
         public string NameOfInitiator { get; set; }
-        public List<string> NamesOfTheOtherParticipants { get; set; }
+        public List<string> NamesOfParticipants { get; set; }
         public string Link { get; set; }
         public List<Post> Posts { get; set; }
 
-        public Discussion(string topic, string nameOfInitiator, List<string> namesOfTheOtherParticipants, string link)
-            : base("document")
+        public Discussion(string topic, string nameOfInitiator, List<string> namesOfParticipants, string link)
+            : base("discussion")
         {
             Topic = topic;
             NameOfInitiator = nameOfInitiator;
-            NamesOfTheOtherParticipants = namesOfTheOtherParticipants;
+            NamesOfParticipants = namesOfParticipants;
             Link = link;
             Posts = new List<Post>();
         }

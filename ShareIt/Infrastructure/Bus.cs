@@ -11,8 +11,12 @@ using ShareIt.LinkCtx.Commands;
 using ShareIt.LinkCtx.Domain;
 using ShareIt.LinkCtx.Events;
 using ShareIt.NotificationCtx;
+using ShareIt.NotificationCtx.Commands;
 using ShareIt.NotificationCtx.DomainServices;
 using ShareIt.ReadCtx;
+using ShareIt.UserCtx.Commands;
+using ShareIt.UserCtx.Domain;
+using ShareIt.UserCtx.Events;
 
 namespace ShareIt.Infrastructure
 {
@@ -80,8 +84,13 @@ namespace ShareIt.Infrastructure
         {
             var bus = new Bus();
             var discussionRepository = new EventStoreRepository<Discussion>(bus);
+            var userRepository = new EventStoreRepository<User>(bus);
+            var linkRepository = new EventStoreRepository<Link>(bus);
 
-            // Command handlers
+            // Command handlers //
+            
+            // UserCtx
+            bus.RegisterHandler<RegisterUser>(cmd => new UserCommandHandler(userRepository).Handle(cmd));
 
             // DiscussionCtx
             bus.RegisterHandler<OpenDiscussion>(cmd => new DiscussionCommandHandler(discussionRepository).Handle(cmd));
@@ -89,22 +98,29 @@ namespace ShareIt.Infrastructure
 
             // LinkCtx
             bus.RegisterHandler<ShareLink>(
-                cmd => new LinkCommandHandler(new EventStoreRepository<Link>(bus)).Handle(cmd));
+                cmd => new LinkCommandHandler(linkRepository).Handle(cmd));
+
+            //  NotificationCtx
+            var mailService = new MailService(new SmtpClient(Settings.SmtpClientHost), Settings.ReadCredentials());
+            bus.RegisterHandler<SendLinkSharedNotification>(cmd => new NotificationCommandHandler(mailService).Handle(cmd));
 
 
-            // Event handlers
+            // Event handlers //
+           
+            // DiscussionCtx
 
             // LinkCtx
+            // Use email as name until poster is registered as a user
             bus.RegisterHandler<SharedLink>(@event => new DiscussionEventHandler().Handle(@event));
 
             // NotificationCtx
-            var mailService = new MailService(new SmtpClient(Settings.SmtpClientHost), Settings.ReadCredentials());
-            bus.RegisterHandler<DiscussionOpened>(@event => new NotificationEventHandler(mailService).Handle(@event));
+            bus.RegisterHandler<DiscussionOpened>(@event => new NotificationEventHandler().Handle(@event));
 
             // ReadCtx
             bus.RegisterHandler<DiscussionOpened>(@event => new ReadEventHandler().Handle(@event));
             bus.RegisterHandler<PostSubmitted>(@event => new ReadEventHandler().Handle(@event));
             bus.RegisterHandler<SharedLink>(@event => new ReadEventHandler().Handle(@event));
+            bus.RegisterHandler<UserRegistered>(@event => new ReadEventHandler().Handle(@event));
 
             return bus;
         }
